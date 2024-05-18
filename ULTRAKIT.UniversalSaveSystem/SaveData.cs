@@ -70,7 +70,7 @@ namespace ULTRAKIT.UniversalSaveSystem
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static bool Internal_SetValue<TKey, TValue>(Dictionary<TKey, TValue> dict, TKey key, TValue value)
+        private static bool Internal_SetValue<TKey, TValue>(Dictionary<TKey, TValue> dict, TKey key, TValue value)
         {
             if (dict.ContainsKey(key))
             {
