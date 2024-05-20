@@ -16,6 +16,12 @@ namespace ULTRAKIT.UniversalSaveSystem
         private void Awake()
         {
             Logger = base.Logger;
+            Logger.LogInfo("ULTRAKIT Module Loaded: Universal Save System");
+        }
+
+        private void Start()
+        {
+            SaveData.Load();
         }
     }
 }

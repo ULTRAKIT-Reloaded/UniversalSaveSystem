@@ -17,8 +17,7 @@ namespace ULTRAKIT.UniversalSaveSystem
         private const string folderName = "data";
         private static string dataFilePath = GetDataPath("save.ultradata");
 
-        // Doesn't save when modifying dictionaries in the data, technically only a get; data setters call Save()
-        public static PersistentData data
+        internal static PersistentData data
         {
             get
             {
@@ -26,26 +25,20 @@ namespace ULTRAKIT.UniversalSaveSystem
                     Load();
                 return _data;
             }
-            set
-            {
-                if (value != null && value != _data)
-                {
-                    _data = value;
-                    Save();
-                    return;
-                }
+            private set 
+            { 
+                data = value; 
             }
         }
 
         private static PersistentData _data;
 
-        // Slightly useful, maybe more so in the future, but unlikely
         /// <summary>
-        /// Gets the (sub)directory of ULTRAKIT Reloaded's data path
+        /// Gets the (sub)directory of Universal Save System's data folder
         /// </summary>
         /// <param name="subpath"></param>
         /// <returns></returns>
-        public static string GetDataPath(params string[] subpath)
+        internal static string GetDataPath(params string[] subpath)
         {
             string modDir = Assembly.GetExecutingAssembly().Location;
             modDir = Path.GetDirectoryName(modDir);
@@ -62,7 +55,7 @@ namespace ULTRAKIT.UniversalSaveSystem
 
         // What all internal functions use, returns true if the data already exists
         /// <summary>
-        /// Internal data setter, do not use
+        /// Internal data setter
         /// </summary>
         /// <typeparam name="TKey"></typeparam>
         /// <typeparam name="TValue"></typeparam>
@@ -106,9 +99,9 @@ namespace ULTRAKIT.UniversalSaveSystem
         }
 
         /// <summary>
-        /// Saves ULTRAKIT Reloaded data to a file
+        /// Saves data to a file
         /// </summary>
-        public static void Save()
+        internal static void Save()
         {
             if (!Directory.Exists(GetDataPath()))
                 Directory.CreateDirectory(GetDataPath());
@@ -119,9 +112,9 @@ namespace ULTRAKIT.UniversalSaveSystem
         }
 
         /// <summary>
-        /// Loads ULTRAKIT Reloaded data from the data file
+        /// Loads data from the data file
         /// </summary>
-        public static void Load()
+        internal static void Load()
         {
             Mod.Logger.LogInfo("Loading persistent data...");
             if (!File.Exists(dataFilePath))
@@ -154,40 +147,40 @@ namespace ULTRAKIT.UniversalSaveSystem
             if (global)
             {
                 if (value is string)
-                { Internal_SetValue(data.g_string_data, key, (string)value); return true; }
+                { return Internal_SetValue(data.g_string_data, key, (string)value); }
                 if (value is int)
-                { Internal_SetValue(data.g_int_data, key, (int)value); return true; }
+                { return Internal_SetValue(data.g_int_data, key, (int)value); }
                 if (value is float)
-                { Internal_SetValue(data.g_float_data, key, (float)value); return true; }
+                { return Internal_SetValue(data.g_float_data, key, (float)value); }
                 if (value is bool)
-                { Internal_SetValue(data.g_bool_data, key, (bool)value); return true; }
+                { return Internal_SetValue(data.g_bool_data, key, (bool)value); }
                 if (value is string[])
-                { Internal_SetValue(data.g_string_data_array, key, (string[])value); return true; }
+                { return Internal_SetValue(data.g_string_data_array, key, (string[])value); }
                 if (value is int[])
-                { Internal_SetValue(data.g_int_data_array, key, (int[])value); return true; }
+                { return Internal_SetValue(data.g_int_data_array, key, (int[])value); }
                 if (value is float[])
-                { Internal_SetValue(data.g_float_data_array, key, (float[])value); return true; }
+                { return Internal_SetValue(data.g_float_data_array, key, (float[])value); }
                 if (value is bool[])
-                { Internal_SetValue(data.g_bool_data_array, key, (bool[])value); return true; }
+                { return Internal_SetValue(data.g_bool_data_array, key, (bool[])value); }
                 return false;
             }
             string assembly = Assembly.GetCallingAssembly().GetName().Name;
             if (value is string)
-            { Internal_SetPrivateValue(data.p_string_data, key, (string)value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_string_data, key, (string)value, assembly); }
             if (value is int)
-            { Internal_SetPrivateValue(data.p_int_data, key, (int)value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_int_data, key, (int)value, assembly); }
             if (value is float)
-            { Internal_SetPrivateValue(data.p_float_data, key, (float)value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_float_data, key, (float)value, assembly); }
             if (value is bool)
-            { Internal_SetPrivateValue(data.p_bool_data, key, (bool)value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_bool_data, key, (bool)value, assembly); }
             if (value is string[])
-            { Internal_SetPrivateValue(data.p_string_data_array, key, (string[])value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_string_data_array, key, (string[])value, assembly); }
             if (value is int[])
-            { Internal_SetPrivateValue(data.p_int_data_array, key, (int[])value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_int_data_array, key, (int[])value, assembly); }
             if (value is float[])
-            { Internal_SetPrivateValue(data.p_float_data_array, key, (float[])value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_float_data_array, key, (float[])value, assembly); }
             if (value is bool[])
-            { Internal_SetPrivateValue(data.p_bool_data_array, key, (bool[])value, assembly); return true; }
+            { return Internal_SetPrivateValue(data.p_bool_data_array, key, (bool[])value, assembly); }
             return false;
         }
 
