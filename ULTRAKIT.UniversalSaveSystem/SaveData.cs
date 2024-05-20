@@ -185,15 +185,14 @@ namespace ULTRAKIT.UniversalSaveSystem
         }
 
         /// <summary>
-        /// <para>Retrieves a persistent value, passing it to an out value. If `global == true`, it retrieves from a dictionary unique to the calling assembly.</para>
-        /// T must match the type being retrieved, though the out variable must be of type `object` and then cast into the correct type.
+        /// Internal data getter
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
         /// <param name="global"></param>
         /// <param name="value"></param>
         /// <returns>`true` if successful, `false` otherwise (in which case it passes a `default` out value).</returns>
-        public static bool GetPersistent<T>(string key, bool global, out object value)
+        private static bool Internal_TryGetPersistent<T>(string key, bool global, string assembly, out object value)
         {
             Type type = typeof(T);
             if (global)
@@ -257,7 +256,6 @@ namespace ULTRAKIT.UniversalSaveSystem
                 value = default(T);
                 return false;
             }
-            string assembly = Assembly.GetCallingAssembly().GetName().Name;
             if (type.IsEquivalentTo(typeof(string)))
             {
                 bool success = false;
@@ -340,6 +338,40 @@ namespace ULTRAKIT.UniversalSaveSystem
             }
             value = default(T);
             return false;
+        }
+
+        /// <summary>
+        /// <para>Retrieves a persistent value, passing it to an out value. If `global == false`, it retrieves from a dictionary unique to the calling assembly.</para>
+        /// T must match the type being retrieved, though the out variable must be of type `object` and then cast into the correct type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="global"></param>
+        /// <param name="value"></param>
+        /// <returns>`true` if successful, `false` otherwise (in which case it passes a `default` out value).</returns>
+        public static bool TryGetPersistent<T>(string key, bool global, out object value)
+        {
+            return Internal_TryGetPersistent<T>(key, global, Assembly.GetCallingAssembly().GetName().Name, out value);
+        }
+
+        /// <summary>
+        /// <para>Retrieves a persistent value. If `global == false`, it retrieves from a dictionary unique to the calling assembly.</para>
+        /// T must match the type being retrieved.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="global"></param>
+        /// <param name="value"></param>
+        /// <returns>`true` if successful, `false` otherwise (in which case it passes a `default` out value).</returns>
+        public static T GetPersistent<T>(string key, bool global)
+        {
+            string assembly = Assembly.GetCallingAssembly().GetName().Name;
+
+            if (Internal_TryGetPersistent<T>(key, global, assembly, out object value))
+            {
+                return (T)value;
+            }
+            throw new KeyNotFoundException($"Key '{key}' not found in global data.");
         }
     }
 
