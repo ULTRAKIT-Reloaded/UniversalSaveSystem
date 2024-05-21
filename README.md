@@ -15,7 +15,7 @@ Use `ULTRAKIT.UniversalSaveSystem.SaveData.TryGetPersistent<T>(string key, bool 
 Alternatively, use `ULTRAKIT.UniversalSaveSystem.SaveData.GetPersistent<T>(string key, bool global)` to retrieve and return data directly, but throws an exception if the data is missing.
 
 ### Example
-```
+```csharp
 using ULTRAKIT.UniversalSaveSystem;
 
 string firstString = "This will be stored in a json file.";
