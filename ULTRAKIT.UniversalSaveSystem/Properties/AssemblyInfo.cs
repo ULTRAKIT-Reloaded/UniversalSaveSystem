@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ULTRAKIT.UniversalSaveSystem")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("BepInEx plugin to store/retrieve persistent data via json in a text file.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("HP")]
-[assembly: AssemblyProduct("ULTRAKIT.UniversalSaveSystem")]
+[assembly: AssemblyCompany("ULTRAKIT")]
+[assembly: AssemblyProduct("UniversalSaveSystem")]
 [assembly: AssemblyCopyright("Copyright © HP 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
